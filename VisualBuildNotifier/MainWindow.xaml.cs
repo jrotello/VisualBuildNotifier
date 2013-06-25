@@ -16,6 +16,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.TeamFoundation.Common;
 using Microsoft.TeamFoundation.Client;
+using Plenom.Components.Busylight.Sdk;
 using VisualBuildNotifier.Models;
 using VisualBuildNotifier.Properties;
 using VisualBuildNotifier.Services;
@@ -39,13 +40,22 @@ namespace VisualBuildNotifier
         }
 
         private NotifyIcon _notifyIcon;
+        private BusylightLyncController _busylight;
 
         protected override void OnInitialized(EventArgs e)
         {
             base.OnInitialized(e);
 
             InitializeTrayIcon();
-            _vm.StatusIndicators.Add(new SystemTrayBuildStatusIndicator(_notifyIcon));
+
+            _busylight = new BusylightLyncController();
+            _busylight.Light(BusylightColor.Off);
+
+            _vm.StatusIndicators.AddRange(new IBuildStatusIndicator[] {
+                new SystemTrayBuildStatusIndicator(_notifyIcon),
+                new BusylightBuildStatusIndicator(_busylight)
+            });
+
 
             StateChanged += MainWindow_StateChanged;
             Closed += MainWindow_Closed;         
@@ -71,6 +81,7 @@ namespace VisualBuildNotifier
                 _notifyIcon = null;
             }
 
+            _busylight.Light(BusylightColor.Off);
             _vm.StopTracking();
         }
 

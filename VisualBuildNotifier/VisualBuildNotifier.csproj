@@ -38,6 +38,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Accessibility" />
+    <Reference Include="Busylight.Sdk">
+      <HintPath>lib\Busylight.Sdk.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.TeamFoundation.Build.Client, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.TeamFoundation.Build.Common, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.TeamFoundation.Client, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
@@ -70,6 +73,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Services\BuildStatusIndicatorBase.cs" />
+    <Compile Include="Services\BusylightBuildStatusIndicator.cs" />
     <Compile Include="Services\IBuildStatusIndicator.cs" />
     <Compile Include="Services\ITfsService.cs" />
     <Compile Include="Services\SystemTrayBuildStatusIndicator.cs" />
