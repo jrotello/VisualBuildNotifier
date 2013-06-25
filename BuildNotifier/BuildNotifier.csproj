@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Busylight.Sdk">
+      <HintPath>..\VisualBuildNotifier\lib\Busylight.Sdk.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.TeamFoundation.Build.Client, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.TeamFoundation.Build.Common, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.TeamFoundation.Client, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
@@ -45,6 +48,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\VisualBuildNotifier\Services\BuildStatusIndicatorBase.cs">
+      <Link>Services\BuildStatusIndicatorBase.cs</Link>
+    </Compile>
+    <Compile Include="..\VisualBuildNotifier\Services\BusylightBuildStatusIndicator.cs">
+      <Link>Services\BusylightBuildStatusIndicator.cs</Link>
+    </Compile>
     <Compile Include="..\VisualBuildNotifier\Services\IBuildStatusIndicator.cs">
       <Link>Services\IBuildStatusIndicator.cs</Link>
     </Compile>

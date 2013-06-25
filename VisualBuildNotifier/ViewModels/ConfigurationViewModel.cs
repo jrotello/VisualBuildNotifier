@@ -127,7 +127,7 @@ namespace VisualBuildNotifier.ViewModels
                 Server = _configuration.Server;
                 Project = picker.SelectedProjects[0].Name;
 
-                Build = "11.0-Orion"; // TODO: Temporary
+                Build = "11.0"; // TODO: Temporary
 
                 _timer.IsEnabled = true;
 

@@ -15,7 +15,7 @@ namespace BuildNotifier {
 
             _tfsService = new TfsService(TfsUri);
             using (var timer = new Timer()) {
-                timer.Interval = 15000;
+                timer.Interval = 10000;
                 timer.Elapsed += QueryBuildStatus;
                 timer.Enabled = true;
 
@@ -25,7 +25,7 @@ namespace BuildNotifier {
         }
 
         private const string TfsProjectName = "Tracker";
-        private const string TfsBuildName = "11.0-Orion";
+        private const string TfsBuildName = "11.0";
 
         private static readonly Uri TfsUri = new Uri("http://wa-devmain-dev.tlr.thomson.com:8080/tfs");
         private static ITfsService _tfsService;
