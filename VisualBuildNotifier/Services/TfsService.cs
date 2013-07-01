@@ -35,27 +35,22 @@ namespace VisualBuildNotifier.Services {
 
         private IEnumerable<IBuildDetail> GetBuildInfo(string projectName, string buildDefinitionName, int maxBuilds) {
             var buildServer = Server.GetService<IBuildServer>();
-            var buildDefinition = buildServer.GetBuildDefinition(projectName, buildDefinitionName);
-            var spec = buildServer.CreateBuildDetailSpec(buildDefinition);
+            
+            var spec = buildServer.CreateBuildDetailSpec(projectName, buildDefinitionName);
             spec.Status = BuildStatus.InProgress | BuildStatus.Succeeded | BuildStatus.PartiallySucceeded | BuildStatus.Failed;
             spec.MaxBuildsPerDefinition = maxBuilds;
             spec.InformationTypes = new string[0]; // Don't return extra information. We are only interested in the basic build info.
+            
             var result = buildServer.QueryBuilds(spec);
             return result.Builds;
         }
 
         public IEnumerable<IBuildDefinition> GetBuildDefinitions(string projectName) {
             var buildServer = Server.GetService<IBuildServer>();
-            IBuildDefinitionSpec[] specs = new[] {
-                buildServer.CreateBuildDefinitionSpec(projectName)
-            };
+            IBuildDefinitionSpec spec = buildServer.CreateBuildDefinitionSpec(projectName);
 
-            var asyncResult = buildServer.BeginQueryBuildDefinitions(specs, null, null);
-            asyncResult.AsyncWaitHandle.WaitOne();
-            asyncResult.AsyncWaitHandle.Close();
-            var results = buildServer.EndQueryBuildDefinitions(asyncResult);
-
-            return results.Length > 0 ? results[0].Definitions : Enumerable.Empty<IBuildDefinition>();
+            var result = buildServer.QueryBuildDefinitions(spec);
+            return result.Definitions;
         }
     }
 }
