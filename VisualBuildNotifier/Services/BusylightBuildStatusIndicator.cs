@@ -29,7 +29,7 @@ namespace VisualBuildNotifier.Services
 
         public override void ReportInProgress(IBuildDetail build) {
             var sequence = new PulseSequence {
-                Color = BusylightColor.Yellow,
+                Color = BusylightColor.Blue,
                 Step1 = 0,
                 Step2 = 255,
                 Step3 = 0,

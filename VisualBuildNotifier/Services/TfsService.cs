@@ -37,6 +37,7 @@ namespace VisualBuildNotifier.Services {
             var buildServer = Server.GetService<IBuildServer>();
             
             var spec = buildServer.CreateBuildDetailSpec(projectName, buildDefinitionName);
+            spec.QueryOrder = BuildQueryOrder.StartTimeDescending;
             spec.Status = BuildStatus.InProgress | BuildStatus.Succeeded | BuildStatus.PartiallySucceeded | BuildStatus.Failed;
             spec.MaxBuildsPerDefinition = maxBuilds;
             spec.InformationTypes = new string[0]; // Don't return extra information. We are only interested in the basic build info.

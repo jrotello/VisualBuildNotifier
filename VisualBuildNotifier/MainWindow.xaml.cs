@@ -52,6 +52,7 @@ namespace VisualBuildNotifier
             _busylight.Light(BusylightColor.Off);
 
             _vm.StatusIndicators.AddRange(new IBuildStatusIndicator[] {
+                new LoggingBuildStatusIndicator(), 
                 new SystemTrayBuildStatusIndicator(_notifyIcon),
                 new BusylightBuildStatusIndicator(_busylight)
             });
