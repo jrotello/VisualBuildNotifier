@@ -28,10 +28,10 @@ namespace VisualBuildNotifier
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window {
-        private readonly ConfigurationViewModel _vm;
+        private readonly MainWindowViewModel _vm;
         public MainWindow()
         {
-            _vm = new ConfigurationViewModel(new Configuration());
+            _vm = new MainWindowViewModel(new Configuration());
             
             InitializeComponent();
 
@@ -102,6 +102,7 @@ namespace VisualBuildNotifier
         }
 
         private void Save_OnClick(object sender, RoutedEventArgs e) {
+            _vm.SaveConfiguration();
         }
     }
 }

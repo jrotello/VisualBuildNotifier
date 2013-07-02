@@ -84,7 +84,7 @@
     <Compile Include="Services\LoggingBuildStatusIndicator.cs" />
     <Compile Include="Services\SystemTrayBuildStatusIndicator.cs" />
     <Compile Include="Services\TfsService.cs" />
-    <Compile Include="ViewModels\ConfigurationViewModel.cs" />
+    <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

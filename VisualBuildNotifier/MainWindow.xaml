@@ -16,12 +16,12 @@
 
         <Label Content="Server:" Grid.Row="0"  Grid.Column="0" Margin="0, 0, 30, 0"></Label>
         <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left">
-            <TextBox MinWidth="250" MaxWidth="327" Text="{Binding Server}"></TextBox>
+            <TextBox MinWidth="250" MaxWidth="327" Text="{Binding SelectedServerUri}"></TextBox>
             <Button Content="Server..." MinWidth="80" Click="Button_Click" Margin="5, 0, 0, 0" />
         </StackPanel>
 
         <Label Content="Project:" Grid.Row="1" Grid.Column="0"></Label>
-        <TextBox Text="{Binding Project}" MinWidth="200" Grid.Row="1" Grid.Column="1"></TextBox>
+        <TextBox Text="{Binding SelectedProjectName}" MinWidth="200" Grid.Row="1" Grid.Column="1"></TextBox>
 
         <Label Content="Builds:" Grid.Row="2"></Label>
         <ListBox SelectedItem="{Binding SelectedBuildDefinitionName}" ItemsSource="{Binding BuildDefinitionNames}" Grid.Row="2" Grid.Column="1"/>
