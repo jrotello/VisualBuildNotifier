@@ -24,7 +24,7 @@
         <TextBox Text="{Binding Project}" MinWidth="200" Grid.Row="1" Grid.Column="1"></TextBox>
 
         <Label Content="Builds:" Grid.Row="2"></Label>
-        <ListBox ItemsSource="{Binding BuildDefinitionNames}" Grid.Row="2" Grid.Column="1"/>
+        <ListBox SelectedItem="{Binding SelectedBuildDefinitionName}" ItemsSource="{Binding BuildDefinitionNames}" Grid.Row="2" Grid.Column="1"/>
 
         <StackPanel Orientation="Horizontal" Height="auto" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Right">
             <Button Content="Save" Click="Save_OnClick"  MinWidth="80" MinHeight="30"/>

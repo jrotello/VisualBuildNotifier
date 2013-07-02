@@ -12,12 +12,15 @@ using System.Threading.Tasks;
 using System.Windows.Threading;
 using Microsoft.TeamFoundation.Build.Client;
 using Microsoft.TeamFoundation.Client;
+using NLog;
 using VisualBuildNotifier.Models;
 using VisualBuildNotifier.Services;
 
 namespace VisualBuildNotifier.ViewModels
 {
     public class ConfigurationViewModel: INotifyPropertyChanged {
+        private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+
         private readonly Configuration _configuration;
         private readonly ObservableCollection<string> _buildDefinitionNames = new ObservableCollection<string>();
         private readonly DispatcherTimer _timer;
@@ -105,10 +108,11 @@ namespace VisualBuildNotifier.ViewModels
             }
         }
 
-        public string Build {
+        public string SelectedBuildDefinitionName {
             get { return _configuration.Build; }
             set {
                 if (_configuration.Build != value) {
+                    _logger.Trace("Build definition selected: {0}", value);
                     _configuration.Build = value;
                     OnPropertyChanged();
                 }
@@ -127,11 +131,12 @@ namespace VisualBuildNotifier.ViewModels
                 Server = _configuration.Server;
                 Project = picker.SelectedProjects[0].Name;
 
-                Build = "11.0"; // TODO: Temporary
-
-                _timer.IsEnabled = true;
+                //Build = "11.0"; // TODO: Temporary
 
                 RefreshBuildDefinitions();
+                SelectedBuildDefinitionName = BuildDefinitionNames.FirstOrDefault() ?? String.Empty;
+
+                _timer.IsEnabled = true;
             }            
         }
 

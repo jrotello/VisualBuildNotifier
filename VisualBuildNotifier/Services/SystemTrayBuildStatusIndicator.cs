@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System.Text;
+using System.Windows.Forms;
 using Microsoft.TeamFoundation.Build.Client;
 
 namespace VisualBuildNotifier.Services {
@@ -23,7 +24,7 @@ namespace VisualBuildNotifier.Services {
         public override void ReportFailure(IBuildDetail build) {
             ReportStatus(
                 build,
-                "Build Failure",
+                "Build Failed",
                 ToolTipIcon.Error
             );
         }
@@ -39,11 +40,14 @@ namespace VisualBuildNotifier.Services {
         private void ReportStatus(IBuildDetail build, string text, ToolTipIcon icon = ToolTipIcon.None)
         {
             if (ShouldDisplayNotification(build)) {
-                string message = string.Format("{0} [{1}]", text, build.RequestedFor);               
+                StringBuilder message = new StringBuilder(); 
+                message.AppendFormat("Build Number: {0}\n", build.BuildNumber);
+                message.AppendFormat("User: {0}\n", build.RequestedFor);
+                
                 _notifyIcon.ShowBalloonTip(
                     BalloonTimeout,
-                    build.BuildNumber,
-                    message,
+                    text,
+                    message.ToString(),
                     icon
                 );
             }
