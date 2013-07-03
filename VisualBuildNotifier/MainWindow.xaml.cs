@@ -28,13 +28,13 @@ namespace VisualBuildNotifier
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window {
-        private readonly MainWindowViewModel _vm;
+        private MainWindowViewModel _vm;
         public MainWindow()
         {
             _vm = new MainWindowViewModel(new ConfigManager());
             DataContext = _vm;
 
-            InitializeComponent();
+            InitializeComponent();            
         }
 
         private NotifyIcon _notifyIcon;
@@ -43,10 +43,10 @@ namespace VisualBuildNotifier
         protected override void OnInitialized(EventArgs e)
         {
             base.OnInitialized(e);
+            
+            _vm.LoadConfiguration();
 
             InitializeTrayIcon();
-
-            _vm.LoadConfiguration();
 
             _busylight = new BusylightLyncController();
             _busylight.Light(BusylightColor.Off);

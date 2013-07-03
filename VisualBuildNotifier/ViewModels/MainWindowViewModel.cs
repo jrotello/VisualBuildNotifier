@@ -158,6 +158,9 @@ namespace VisualBuildNotifier.ViewModels
 
         public void LoadConfiguration() {
             _config = _configManager.LoadConfiguration();
+            SelectedServerUri = _config.Server;
+            SelectedProjectName = _config.Project;
+
             if (_config.IsComplete) {
                 RefreshBuildDefinitions();
                 SelectedBuildDefinitionName = SelectedBuildDefinitionName;                     
