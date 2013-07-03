@@ -28,7 +28,7 @@
 
         <StackPanel Orientation="Horizontal" Height="auto" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Right">
             <Button Content="Save" Click="Save_OnClick"  MinWidth="80" MinHeight="30"/>
-            <Button Content="Cancel" MinWidth="80" MinHeight="30" Margin="5,0,0,0"/>
+            <Button Content="Cancel" Click="Cancel_OnClick"  MinWidth="80" MinHeight="30" Margin="5,0,0,0"/>
         </StackPanel>
     </Grid>
 </Window>

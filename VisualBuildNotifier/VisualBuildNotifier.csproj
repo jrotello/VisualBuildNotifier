@@ -78,6 +78,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Core\ConfigManager.cs" />
+    <Compile Include="Core\IConfigManager.cs" />
     <Compile Include="Services\BuildStatusIndicatorBase.cs" />
     <Compile Include="Services\BusylightBuildStatusIndicator.cs" />
     <Compile Include="Services\IBuildStatusIndicator.cs" />

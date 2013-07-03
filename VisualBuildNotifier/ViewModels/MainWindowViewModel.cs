@@ -14,9 +14,9 @@ using System.Windows.Threading;
 using Microsoft.TeamFoundation.Build.Client;
 using Microsoft.TeamFoundation.Client;
 using NLog;
+using VisualBuildNotifier.Models;
 using VisualBuildNotifier.Services;
 using System.Timers;
-using Configuration = VisualBuildNotifier.Models.Config;
 using Timer = System.Timers.Timer;
 
 namespace VisualBuildNotifier.ViewModels
@@ -24,13 +24,15 @@ namespace VisualBuildNotifier.ViewModels
     public class MainWindowViewModel: INotifyPropertyChanged {
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-        private readonly Configuration _configuration;
+        private Config _config;
+        private readonly IConfigManager _configManager;
+
         private readonly ObservableCollection<string> _buildDefinitionNames = new ObservableCollection<string>();
         private readonly Timer _timer;
 
-        public MainWindowViewModel(Configuration configuration = null, ITfsService tfsService = null) {
+        public MainWindowViewModel(IConfigManager configManager, ITfsService tfsService = null) {
             StatusIndicators = new List<IBuildStatusIndicator>();
-            _configuration = configuration ?? new Configuration();
+            _configManager = configManager;
             _tfsService = tfsService;
 
             _timer = new Timer(10000) {Enabled = false};
@@ -43,7 +45,7 @@ namespace VisualBuildNotifier.ViewModels
                 throw new ArgumentNullException();
             }
 
-            IBuildDetail build = TfsService.GetLatestBuildInfo(_configuration.Project, _configuration.Build);
+            IBuildDetail build = TfsService.GetLatestBuildInfo(_config.Project, _config.Build);
             if (build != null) {
                 ReportBuildStatus(build);
             }
@@ -65,12 +67,13 @@ namespace VisualBuildNotifier.ViewModels
             }
         }
 
+        
         private ITfsService _tfsService; 
         private ITfsService TfsService {
             get {
                 if (_tfsService == null) {
-                    if (!String.IsNullOrEmpty(_configuration.Server)) {
-                        _tfsService = new TfsService(new Uri(_configuration.Server));
+                    if (!String.IsNullOrEmpty(_config.Server)) {
+                        _tfsService = new TfsService(new Uri(_config.Server));                        
                     }
                 }
 
@@ -91,7 +94,7 @@ namespace VisualBuildNotifier.ViewModels
 
         private string _selectedServerUri;
         public string SelectedServerUri {
-            get { return String.IsNullOrEmpty(_selectedServerUri) ? _configuration.Server: _selectedServerUri; }
+            get { return _selectedServerUri; }
             set {
                 if (_selectedServerUri != value) {
                     _selectedServerUri = value;
@@ -103,11 +106,9 @@ namespace VisualBuildNotifier.ViewModels
         private string _selectedProjectName;
         public string SelectedProjectName
         {
-            get { return String.IsNullOrEmpty(_selectedProjectName) ? _configuration.Project : _selectedProjectName; }
-            set
-            {
-                if (_selectedProjectName != value)
-                {
+            get { return _selectedProjectName; }
+            set {
+                if (_selectedProjectName != value) {
                     _selectedProjectName = value;
                     OnPropertyChanged();
                 }
@@ -117,9 +118,7 @@ namespace VisualBuildNotifier.ViewModels
         private string _selectedBuildDefinitionName;
         public string SelectedBuildDefinitionName {
             get {
-                return String.IsNullOrEmpty(_selectedBuildDefinitionName)
-                           ? _configuration.Build
-                           : _selectedBuildDefinitionName;
+                return _selectedBuildDefinitionName;
             }
             set {
                 if (_selectedBuildDefinitionName != value) {
@@ -147,6 +146,10 @@ namespace VisualBuildNotifier.ViewModels
         }
 
         private void RefreshBuildDefinitions() {
+            if (TfsService == null) {
+                return;
+            }
+
             BuildDefinitionNames.Clear();            
             TfsService.GetBuildDefinitions(SelectedProjectName)
                 .ToList()
@@ -154,29 +157,27 @@ namespace VisualBuildNotifier.ViewModels
         }
 
         public void LoadConfiguration() {
-            _configuration.Server = ConfigurationManager.AppSettings["TfsServer"];
-            _configuration.Project = ConfigurationManager.AppSettings["TfsProject"];
-            _configuration.Build = ConfigurationManager.AppSettings["TfsBuildDefinition"];
-
-            RefreshBuildDefinitions();
-            SelectedBuildDefinitionName = SelectedBuildDefinitionName;
-
-            StartTracking();
+            _config = _configManager.LoadConfiguration();
+            if (_config.IsComplete) {
+                RefreshBuildDefinitions();
+                SelectedBuildDefinitionName = SelectedBuildDefinitionName;                     
+                StartTracking();
+            }            
         }
 
         public void SaveConfiguration() {
-            _configuration.Server = SelectedServerUri;
-            _configuration.Project = SelectedProjectName;
-            _configuration.Build = SelectedBuildDefinitionName;
-
-            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            config.AppSettings.Settings["TfsServer"].Value = SelectedServerUri;
-            config.AppSettings.Settings["TfsProject"].Value = SelectedProjectName;
-            config.AppSettings.Settings["TfsBuildDefinition"].Value = SelectedBuildDefinitionName;
-
-            config.Save(ConfigurationSaveMode.Modified);
-
+            _config.Server = SelectedServerUri;
+            _config.Project = SelectedProjectName;
+            _config.Build = SelectedBuildDefinitionName;
+            
+            _configManager.SaveConfiguration(_config);
             StartTracking();
+        }
+
+        public void DiscardPendingConfiguration() {
+            SelectedServerUri = _config.Server;
+            SelectedProjectName = _config.Project;
+            SelectedBuildDefinitionName = _config.Build;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

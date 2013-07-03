@@ -31,13 +31,10 @@ namespace VisualBuildNotifier
         private readonly MainWindowViewModel _vm;
         public MainWindow()
         {
-            _vm = new MainWindowViewModel();
-            _vm.LoadConfiguration();
-            
-            InitializeComponent();
+            _vm = new MainWindowViewModel(new ConfigManager());
+            DataContext = _vm;
 
-            //_vm.StartTracking();
-            this.DataContext = _vm;
+            InitializeComponent();
         }
 
         private NotifyIcon _notifyIcon;
@@ -48,6 +45,8 @@ namespace VisualBuildNotifier
             base.OnInitialized(e);
 
             InitializeTrayIcon();
+
+            _vm.LoadConfiguration();
 
             _busylight = new BusylightLyncController();
             _busylight.Light(BusylightColor.Off);
@@ -104,6 +103,11 @@ namespace VisualBuildNotifier
 
         private void Save_OnClick(object sender, RoutedEventArgs e) {
             _vm.SaveConfiguration();
+        }
+
+        private void Cancel_OnClick(object sender, RoutedEventArgs e)
+        {
+            _vm.DiscardPendingConfiguration();
         }
     }
 }
