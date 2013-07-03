@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -13,9 +14,9 @@ using System.Windows.Threading;
 using Microsoft.TeamFoundation.Build.Client;
 using Microsoft.TeamFoundation.Client;
 using NLog;
-using VisualBuildNotifier.Models;
 using VisualBuildNotifier.Services;
 using System.Timers;
+using Configuration = VisualBuildNotifier.Models.Config;
 using Timer = System.Timers.Timer;
 
 namespace VisualBuildNotifier.ViewModels
@@ -152,10 +153,28 @@ namespace VisualBuildNotifier.ViewModels
                 .ForEach(def => BuildDefinitionNames.Add(def.Name));
         }
 
+        public void LoadConfiguration() {
+            _configuration.Server = ConfigurationManager.AppSettings["TfsServer"];
+            _configuration.Project = ConfigurationManager.AppSettings["TfsProject"];
+            _configuration.Build = ConfigurationManager.AppSettings["TfsBuildDefinition"];
+
+            RefreshBuildDefinitions();
+            SelectedBuildDefinitionName = SelectedBuildDefinitionName;
+
+            StartTracking();
+        }
+
         public void SaveConfiguration() {
             _configuration.Server = SelectedServerUri;
             _configuration.Project = SelectedProjectName;
             _configuration.Build = SelectedBuildDefinitionName;
+
+            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            config.AppSettings.Settings["TfsServer"].Value = SelectedServerUri;
+            config.AppSettings.Settings["TfsProject"].Value = SelectedProjectName;
+            config.AppSettings.Settings["TfsBuildDefinition"].Value = SelectedBuildDefinitionName;
+
+            config.Save(ConfigurationSaveMode.Modified);
 
             StartTracking();
         }

@@ -31,7 +31,8 @@ namespace VisualBuildNotifier
         private readonly MainWindowViewModel _vm;
         public MainWindow()
         {
-            _vm = new MainWindowViewModel(new Configuration());
+            _vm = new MainWindowViewModel();
+            _vm.LoadConfiguration();
             
             InitializeComponent();
 
