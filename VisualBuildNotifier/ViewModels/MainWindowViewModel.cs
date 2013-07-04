@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Threading;
+using Microsoft.TeamFoundation;
 using Microsoft.TeamFoundation.Build.Client;
 using Microsoft.TeamFoundation.Client;
 using NLog;
@@ -40,15 +41,13 @@ namespace VisualBuildNotifier.ViewModels
         }
 
         private void QueryBuildStatus(object sender, EventArgs e) {
-
-            if (TfsService == null) {
-                throw new ArgumentNullException();
-            }
-
-            IBuildDetail build = TfsService.GetLatestBuildInfo(_config.Project, _config.Build);
-            if (build != null) {
-                ReportBuildStatus(build);
-            }
+            InvokeTfsOperation(() => {
+                IBuildDetail build = TfsService.GetLatestBuildInfo(_config.Project, _config.Build);
+                if (build != null) {
+                    ReportBuildStatus(build);
+                    StatusText = String.Format("{0}: {1} for {2}", build.Status.ToString(), build.BuildNumber, build.RequestedFor);
+                }
+            });
         }
 
         private void ReportBuildStatus(IBuildDetail build) {
@@ -115,7 +114,7 @@ namespace VisualBuildNotifier.ViewModels
             }
         }
 
-        private string _selectedBuildDefinitionName;
+        private string _selectedBuildDefinitionName;       
         public string SelectedBuildDefinitionName {
             get {
                 return _selectedBuildDefinitionName;
@@ -125,6 +124,17 @@ namespace VisualBuildNotifier.ViewModels
                     _selectedBuildDefinitionName = value;
                     OnPropertyChanged();
                 }
+            }
+        }
+
+        private string _statusText;
+        public string StatusText {
+            get { return _statusText; }
+            set {
+                if (_statusText != value) {
+                    _statusText = value;
+                    OnPropertyChanged();
+                }                
             }
         }
 
@@ -145,15 +155,28 @@ namespace VisualBuildNotifier.ViewModels
             }            
         }
 
-        private void RefreshBuildDefinitions() {
+        private void InvokeTfsOperation(Action action) {
             if (TfsService == null) {
+                _logger.Warn("Unable to connect to TFS with an incomplete configuration.");
+                StatusText = "Unable to connect to TFS with an incomplete configuration.";
                 return;
             }
 
-            BuildDefinitionNames.Clear();            
-            TfsService.GetBuildDefinitions(SelectedProjectName)
-                .ToList()
-                .ForEach(def => BuildDefinitionNames.Add(def.Name));
+            try {
+                action();
+            } catch (TeamFoundationServerException ex) {
+                _logger.WarnException(ex.Message, ex);
+                StatusText = ex.Message;
+            }
+        }
+
+        private void RefreshBuildDefinitions() {
+            BuildDefinitionNames.Clear();
+            InvokeTfsOperation(() =>
+                TfsService.GetBuildDefinitions(SelectedProjectName)
+                            .ToList()
+                            .ForEach(def => BuildDefinitionNames.Add(def.Name))
+            );
         }
 
         public void LoadConfiguration() {
@@ -163,9 +186,9 @@ namespace VisualBuildNotifier.ViewModels
 
             if (_config.IsComplete) {
                 RefreshBuildDefinitions();
-                SelectedBuildDefinitionName = SelectedBuildDefinitionName;                     
+                SelectedBuildDefinitionName = _config.Build;
                 StartTracking();
-            }            
+            }
         }
 
         public void SaveConfiguration() {

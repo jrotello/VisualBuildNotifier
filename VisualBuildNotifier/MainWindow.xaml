@@ -1,12 +1,13 @@
 ﻿<Window x:Class="VisualBuildNotifier.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="TFS Visual Build Notifier for Busylight" Height="350" Width="525" ResizeMode="CanMinimize">
+        Title="TFS Visual Build Notifier for Busylight" SizeToContent="WidthAndHeight" Icon="Build.ico">
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -14,21 +15,25 @@
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <Label Content="Server:" Grid.Row="0"  Grid.Column="0" Margin="0, 0, 30, 0"></Label>
-        <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left">
-            <TextBox MinWidth="250" MaxWidth="327" Text="{Binding SelectedServerUri}"></TextBox>
-            <Button Content="Server..." MinWidth="80" Click="Button_Click" Margin="5, 0, 0, 0" />
+        <Label Content="Server:" Grid.Row="0"  Grid.Column="0" Margin="5"></Label>
+        <DockPanel Grid.Row="0" Grid.Column="1" Margin="5">
+            <Button Content="Server..." DockPanel.Dock="Right" Click="Button_Click" Margin="5, 0, 0, 0" Padding="10, 5" />
+            <TextBox Text="{Binding SelectedServerUri}" IsEnabled="False"></TextBox>            
+        </DockPanel>
+
+        <Label Content="Project:" Grid.Row="1" Grid.Column="0" Margin="5"></Label>
+        <TextBox Text="{Binding SelectedProjectName}" Margin="5" Grid.Row="1" Grid.Column="1"></TextBox>
+
+        <Label Content="Build Definitions:" Grid.Row="2" Margin="5"></Label>
+        <DockPanel Grid.Row="2" Grid.Column="1" Margin="5">
+            <ComboBox SelectedItem="{Binding SelectedBuildDefinitionName}" ItemsSource="{Binding BuildDefinitionNames}" />
+        </DockPanel>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Right" Margin="5">
+            <Button Content="Save" Click="Save_OnClick"  Padding="10,5" MinHeight="30"/>
+            <Button Content="Cancel" Click="Cancel_OnClick"  Padding="10, 5" Margin="5,0,0,0"/>
         </StackPanel>
 
-        <Label Content="Project:" Grid.Row="1" Grid.Column="0"></Label>
-        <TextBox Text="{Binding SelectedProjectName}" MinWidth="200" Grid.Row="1" Grid.Column="1"></TextBox>
-
-        <Label Content="Builds:" Grid.Row="2"></Label>
-        <ListBox SelectedItem="{Binding SelectedBuildDefinitionName}" ItemsSource="{Binding BuildDefinitionNames}" Grid.Row="2" Grid.Column="1"/>
-
-        <StackPanel Orientation="Horizontal" Height="auto" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Right">
-            <Button Content="Save" Click="Save_OnClick"  MinWidth="80" MinHeight="30"/>
-            <Button Content="Cancel" Click="Cancel_OnClick"  MinWidth="80" MinHeight="30" Margin="5,0,0,0"/>
-        </StackPanel>
+        <TextBlock Text="{Binding StatusText}" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"></TextBlock>
     </Grid>
 </Window>

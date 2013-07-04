@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Windows.Threading;
 using Microsoft.TeamFoundation.Build.Client;
 using Microsoft.TeamFoundation.Client;
+using NLog;
 
 namespace VisualBuildNotifier.Services {
     public class TfsService: ITfsService {
+        private Logger _logger = LogManager.GetCurrentClassLogger();
 
         public TfsService(Uri serverUri) {
             if (serverUri == null) {
@@ -21,7 +26,7 @@ namespace VisualBuildNotifier.Services {
         private TfsTeamProjectCollection Server {
             get {
                 if (_server == null) {
-                    _server = new TfsTeamProjectCollection(ServerUri);
+                    _server = TfsTeamProjectCollectionFactory.GetTeamProjectCollection(ServerUri);
                     _server.EnsureAuthenticated();
                 }
 
