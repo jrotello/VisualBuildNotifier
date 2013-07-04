@@ -43,6 +43,9 @@
             <Button Content="Cancel" Click="Cancel_OnClick"  Padding="10, 5" Margin="5,0,0,0"/>
         </StackPanel>
 
-        <TextBlock Text="{Binding StatusText}" FontSize="12" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"></TextBlock>
+        <DockPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2">
+            <TextBlock Text="{Binding StatusText}" FontSize="12" TextWrapping="Wrap"></TextBlock>            
+        </DockPanel>
+        
     </Grid>
 </Window>
