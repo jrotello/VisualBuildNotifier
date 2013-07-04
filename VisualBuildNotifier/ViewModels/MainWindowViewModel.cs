@@ -150,33 +150,43 @@ namespace VisualBuildNotifier.ViewModels
 
                 TfsService = new TfsService(new Uri(SelectedServerUri));
 
-                RefreshBuildDefinitions();
-                SelectedBuildDefinitionName = BuildDefinitionNames.FirstOrDefault() ?? String.Empty;
+                RefreshBuildDefinitions();                
             }            
         }
 
         private void InvokeTfsOperation(Action action) {
+            if (action == null) {
+                throw new ArgumentNullException("action");
+            }
+
             if (TfsService == null) {
-                _logger.Warn("Unable to connect to TFS with an incomplete configuration.");
-                StatusText = "Unable to connect to TFS with an incomplete configuration.";
+                const string msg = "Unable to connect to TFS with an incomplete configuration.";
+                _logger.Warn(msg);
+                StatusText = msg;
                 return;
             }
 
             try {
                 action();
             } catch (TeamFoundationServerException ex) {
-                _logger.WarnException(ex.Message, ex);
+                _logger.ErrorException(ex.Message, ex);
                 StatusText = ex.Message;
             }
         }
 
-        private void RefreshBuildDefinitions() {
+        public void RefreshBuildDefinitions() {
             BuildDefinitionNames.Clear();
-            InvokeTfsOperation(() =>
+            InvokeTfsOperation(() => {
                 TfsService.GetBuildDefinitions(SelectedProjectName)
-                            .ToList()
-                            .ForEach(def => BuildDefinitionNames.Add(def.Name))
-            );
+                          .ToList()
+                          .ForEach(def => BuildDefinitionNames.Add(def.Name));
+
+                if (string.IsNullOrEmpty(_config.Build)) {
+                    SelectedBuildDefinitionName = BuildDefinitionNames.FirstOrDefault() ?? String.Empty;
+                } else {
+                    SelectedBuildDefinitionName = _config.Build;
+                }                
+            });
         }
 
         public void LoadConfiguration() {
@@ -186,7 +196,6 @@ namespace VisualBuildNotifier.ViewModels
 
             if (_config.IsComplete) {
                 RefreshBuildDefinitions();
-                SelectedBuildDefinitionName = _config.Build;
                 StartTracking();
             }
         }

@@ -109,5 +109,10 @@ namespace VisualBuildNotifier
         {
             _vm.DiscardPendingConfiguration();
         }
+
+        private void Refresh_OnClick(object sender, RoutedEventArgs e)
+        {
+            _vm.RefreshBuildDefinitions();
+        }
     }
 }
