@@ -44,6 +44,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Busylight.1.0.1.25\lib\Busylight.Sdk.dll</HintPath>
     </Reference>
+    <Reference Include="HidLibrary">
+      <HintPath>..\lib\HidLibrary.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.TeamFoundation.Build.Client, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.TeamFoundation.Build.Common, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.TeamFoundation.Client, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
@@ -68,6 +71,9 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="ThingM.Blink1">
+      <HintPath>..\lib\ThingM.Blink1.dll</HintPath>
+    </Reference>
     <Reference Include="UIAutomationProvider" />
     <Reference Include="UIAutomationTypes" />
     <Reference Include="WindowsBase" />
@@ -81,6 +87,7 @@
     </ApplicationDefinition>
     <Compile Include="Core\ConfigManager.cs" />
     <Compile Include="Core\IConfigManager.cs" />
+    <Compile Include="Core\Indicators\Blink1BuildStatusIndicator.cs" />
     <Compile Include="Core\Indicators\BuildStatusIndicatorBase.cs" />
     <Compile Include="Core\Indicators\BusylightBuildStatusIndicator.cs" />
     <Compile Include="Core\Indicators\IBuildStatusIndicator.cs" />
