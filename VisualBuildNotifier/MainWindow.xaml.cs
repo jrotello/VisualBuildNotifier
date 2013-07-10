@@ -17,6 +17,7 @@ using System.Windows.Shapes;
 using Microsoft.TeamFoundation.Common;
 using Microsoft.TeamFoundation.Client;
 using Plenom.Components.Busylight.Sdk;
+using VisualBuildNotifier.Core.Indicators;
 using VisualBuildNotifier.Models;
 using VisualBuildNotifier.Properties;
 using VisualBuildNotifier.Services;

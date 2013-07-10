@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.TeamFoundation.Build.Client;
+﻿using Microsoft.TeamFoundation.Build.Client;
 using NLog;
 
-namespace VisualBuildNotifier.Services
+namespace VisualBuildNotifier.Core.Indicators
 {
     public class LoggingBuildStatusIndicator: BuildStatusIndicatorBase {
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();

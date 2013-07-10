@@ -1,6 +1,7 @@
 ﻿using Microsoft.TeamFoundation.Build.Client;
+using VisualBuildNotifier.Services;
 
-namespace VisualBuildNotifier.Services {
+namespace VisualBuildNotifier.Core.Indicators {
     public abstract class BuildStatusIndicatorBase : IBuildStatusIndicator {
         public abstract void ReportSuccess(IBuildDetail build);
         public abstract void ReportFailure(IBuildDetail build);

@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.TeamFoundation.Build.Client;
 using Plenom.Components.Busylight.Sdk;
 
-namespace VisualBuildNotifier.Services
+namespace VisualBuildNotifier.Core.Indicators
 {
     public class BusylightBuildStatusIndicator: BuildStatusIndicatorBase {
         private readonly BusylightController _busylight;

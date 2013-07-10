@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 using Microsoft.TeamFoundation.Build.Client;
 
-namespace VisualBuildNotifier.Services {
+namespace VisualBuildNotifier.Core.Indicators {
     public class SystemTrayBuildStatusIndicator: BuildStatusIndicatorBase {        
         private const int BalloonTimeout = 1500;
 

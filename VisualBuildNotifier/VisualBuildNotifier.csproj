@@ -80,12 +80,12 @@
     </ApplicationDefinition>
     <Compile Include="Core\ConfigManager.cs" />
     <Compile Include="Core\IConfigManager.cs" />
-    <Compile Include="Services\BuildStatusIndicatorBase.cs" />
-    <Compile Include="Services\BusylightBuildStatusIndicator.cs" />
-    <Compile Include="Services\IBuildStatusIndicator.cs" />
+    <Compile Include="Core\Indicators\BuildStatusIndicatorBase.cs" />
+    <Compile Include="Core\Indicators\BusylightBuildStatusIndicator.cs" />
+    <Compile Include="Core\Indicators\IBuildStatusIndicator.cs" />
     <Compile Include="Services\ITfsService.cs" />
-    <Compile Include="Services\LoggingBuildStatusIndicator.cs" />
-    <Compile Include="Services\SystemTrayBuildStatusIndicator.cs" />
+    <Compile Include="Core\Indicators\LoggingBuildStatusIndicator.cs" />
+    <Compile Include="Core\Indicators\SystemTrayBuildStatusIndicator.cs" />
     <Compile Include="Services\TfsService.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Page Include="MainWindow.xaml">
