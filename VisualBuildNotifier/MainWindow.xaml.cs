@@ -101,6 +101,8 @@ namespace VisualBuildNotifier
 
         private void Save_OnClick(object sender, RoutedEventArgs e) {
             _vm.SaveConfiguration();
+
+            WindowState = WindowState.Minimized;
         }
 
         private void Cancel_OnClick(object sender, RoutedEventArgs e)
