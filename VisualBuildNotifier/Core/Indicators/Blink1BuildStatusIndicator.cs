@@ -34,7 +34,7 @@ namespace VisualBuildNotifier.Core.Indicators
                 try {
                     blink1.Open();
                     blink1.SetColor(0, 0, 0);
-                    blink1.FadeToColor(500, new HtmlHexadecimal(color), true);
+                    blink1.FadeToColor(750, new HtmlHexadecimal(color), true);
                 } catch (InvalidOperationException exception) {
                     _logger.ErrorException(exception.Message, exception);
                 } finally {
