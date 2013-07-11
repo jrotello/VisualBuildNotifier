@@ -1,8 +1,8 @@
-﻿using System;
-using System.Configuration;
+﻿using System.Configuration;
 using VisualBuildNotifier.Models;
+using VisualBuildNotifier.Services;
 
-namespace VisualBuildNotifier.Services {
+namespace VisualBuildNotifier.Core {
     public class ConfigManager: IConfigManager {
         public Config LoadConfiguration() {
             var config = new Config {

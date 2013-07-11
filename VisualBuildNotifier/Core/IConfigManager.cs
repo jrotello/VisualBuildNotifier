@@ -1,10 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VisualBuildNotifier.Models;
+﻿using VisualBuildNotifier.Models;
 
-namespace VisualBuildNotifier.Services
+namespace VisualBuildNotifier.Core
 {
     public interface IConfigManager {
         Config LoadConfiguration();

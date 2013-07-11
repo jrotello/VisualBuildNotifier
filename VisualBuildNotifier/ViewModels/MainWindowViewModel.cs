@@ -15,6 +15,7 @@ using Microsoft.TeamFoundation;
 using Microsoft.TeamFoundation.Build.Client;
 using Microsoft.TeamFoundation.Client;
 using NLog;
+using VisualBuildNotifier.Core;
 using VisualBuildNotifier.Core.Indicators;
 using VisualBuildNotifier.Models;
 using VisualBuildNotifier.Services;
