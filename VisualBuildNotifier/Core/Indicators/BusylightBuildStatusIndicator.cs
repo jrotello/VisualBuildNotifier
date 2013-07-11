@@ -4,15 +4,12 @@ using Plenom.Components.Busylight.Sdk;
 
 namespace VisualBuildNotifier.Core.Indicators
 {
-    public class BusylightBuildStatusIndicator: BuildStatusIndicatorBase {
+    public class BusylightBuildStatusIndicator: BuildStatusIndicatorBase, IDisposable {
         private readonly BusylightController _busylight;
 
-        public BusylightBuildStatusIndicator(BusylightController busylight) {
-            if (busylight == null) {
-                throw new ArgumentNullException("busylight");
-            }
-
-            _busylight = busylight;
+        public BusylightBuildStatusIndicator() {
+            _busylight = new BusylightLyncController();
+            _busylight.Light(BusylightColor.Off);
         }
 
         public override void ReportSuccess(IBuildDetail build) {
@@ -32,6 +29,27 @@ namespace VisualBuildNotifier.Core.Indicators
                 Step4 = 255
             };
             _busylight.Pulse(sequence);
+        }
+
+        public void Dispose() {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        private bool _disposed;
+
+        private void Dispose(bool disposing) {
+            if (!_disposed) {
+                if (disposing) {
+                    _busylight.Light(BusylightColor.Off);
+                }
+            }
+
+            _disposed = true;
+        }
+
+        ~BusylightBuildStatusIndicator() {
+            Dispose(false);
         }
     }
 }

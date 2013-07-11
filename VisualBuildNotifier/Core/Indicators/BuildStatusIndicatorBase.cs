@@ -1,4 +1,5 @@
-﻿using Microsoft.TeamFoundation.Build.Client;
+﻿using System;
+using Microsoft.TeamFoundation.Build.Client;
 using VisualBuildNotifier.Services;
 
 namespace VisualBuildNotifier.Core.Indicators {

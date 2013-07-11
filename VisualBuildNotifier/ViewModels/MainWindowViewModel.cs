@@ -216,6 +216,17 @@ namespace VisualBuildNotifier.ViewModels
             SelectedBuildDefinitionName = _config.Build;
         }
 
+        public void Cleanup() {
+            StopTracking();
+
+            StatusIndicators.ForEach(indicator => {
+                var disposable = indicator as IDisposable;
+                if (disposable != null) {
+                    disposable.Dispose();
+                }
+            });
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) {

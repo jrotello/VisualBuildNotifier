@@ -39,7 +39,6 @@ namespace VisualBuildNotifier
         }
 
         private NotifyIcon _notifyIcon;
-        private BusylightLyncController _busylight;
 
         protected override void OnInitialized(EventArgs e)
         {
@@ -49,13 +48,10 @@ namespace VisualBuildNotifier
 
             InitializeTrayIcon();
 
-            _busylight = new BusylightLyncController();
-            _busylight.Light(BusylightColor.Off);
-
             _vm.StatusIndicators.AddRange(new IBuildStatusIndicator[] {
                 new LoggingBuildStatusIndicator(), 
                 new SystemTrayBuildStatusIndicator(_notifyIcon),
-                new BusylightBuildStatusIndicator(_busylight),
+                new BusylightBuildStatusIndicator(),
                 new Blink1BuildStatusIndicator()
             });
 
@@ -84,8 +80,7 @@ namespace VisualBuildNotifier
                 _notifyIcon = null;
             }
 
-            _busylight.Light(BusylightColor.Off);
-            _vm.StopTracking();
+            _vm.Cleanup();
         }
 
         void MainWindow_StateChanged(object sender, EventArgs e)
