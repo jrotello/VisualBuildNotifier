@@ -140,6 +140,10 @@ namespace VisualBuildNotifier.ViewModels
             }
         }
 
+        public bool Blink1Enabled {
+            get { return _config.Blink1Enabled; }
+        }
+
         public ObservableCollection<string> BuildDefinitionNames {
             get { return _buildDefinitionNames; }
         }

@@ -52,10 +52,12 @@ namespace VisualBuildNotifier
             _vm.StatusIndicators.AddRange(new IBuildStatusIndicator[] {
                 new LoggingBuildStatusIndicator(), 
                 new SystemTrayBuildStatusIndicator(_notifyIcon),
-                new BusylightBuildStatusIndicator(),
-                new Blink1BuildStatusIndicator()
+                new BusylightBuildStatusIndicator()
             });
 
+            if (_vm.Blink1Enabled) {
+                _vm.StatusIndicators.Add(new Blink1BuildStatusIndicator());
+            }
 
             StateChanged += MainWindow_StateChanged;
             Closed += MainWindow_Closed;         

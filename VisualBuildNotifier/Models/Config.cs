@@ -5,6 +5,8 @@
         public string Server { get; set; }
         public string Build { get; set; }
 
+        public bool Blink1Enabled { get; set; }
+
         public bool IsComplete {
             get {
                 return
